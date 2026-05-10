@@ -1,0 +1,264 @@
+/* Theme Variables - Dark Mode */
+:root[data-theme="dark"] {
+  --bg-primary: #080B1F;
+  --bg-secondary: #0F1434;
+  --bg-elevated: #161D3D;
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3C1;
+  --text-muted: #6B7299;
+  --border-color: #1E2647;
+  --border-hover: #2A3558;
+  --primary: #D4FF00;
+  --primary-rgb: 212, 255, 0;
+  --primary-glow: rgba(212, 255, 0, 0.25);
+  --accent: #A78BFA;
+  --accent-rgb: 167, 139, 250;
+  --accent-glow: rgba(167, 139, 250, 0.25);
+  --ring-offset: #080B1F;
+}
+
+/* Theme Variables - Light Mode */
+:root[data-theme="light"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-elevated: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --border-color: #E2E8F0;
+  --border-hover: #CBD5E1;
+  --primary: #84CC16;
+  --primary-rgb: 132, 204, 22;
+  --primary-glow: rgba(132, 204, 22, 0.15);
+  --accent: #8B5CF6;
+  --accent-rgb: 139, 92, 246;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  --ring-offset: #FFFFFF;
+}
+
+/* Theme Classes */
+.theme-bg {
+  background-color: var(--bg-primary);
+  position: relative;
+}
+
+.theme-card {
+  background-color: var(--bg-secondary);
+}
+
+.theme-card-elevated {
+  background-color: var(--bg-elevated);
+}
+
+.theme-card-hover {
+  background-color: var(--bg-secondary);
+}
+
+.theme-card-hover:hover {
+  background-color: var(--bg-elevated);
+}
+
+.theme-text {
+  color: var(--text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--text-secondary);
+}
+
+.theme-text-muted {
+  color: var(--text-muted);
+}
+
+.theme-border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-color);
+}
+
+.theme-border-color {
+  background-color: var(--border-color);
+}
+
+.theme-ring-offset {
+  --tw-ring-offset-color: var(--ring-offset);
+}
+
+/* Color Utilities */
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-accent {
+  color: var(--accent) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+
+.border-primary {
+  border-color: var(--primary) !important;
+}
+
+.border-accent {
+  border-color: var(--accent) !important;
+}
+
+/* Glow Effects */
+.shadow-glow-primary {
+  box-shadow: 0 0 20px var(--primary-glow), 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-glow-accent {
+  box-shadow: 0 0 20px var(--accent-glow), 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hover\:shadow-glow-primary:hover {
+  box-shadow: 0 0 30px var(--primary-glow), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hover\:shadow-glow-accent:hover {
+  box-shadow: 0 0 30px var(--accent-glow), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) var(--bg-secondary);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Grid overlay for dark theme only */
+:root[data-theme="dark"] .theme-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+/* Radial glow for dark theme only */
+:root[data-theme="dark"] .theme-bg::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 500px;
+  background: radial-gradient(ellipse at center, rgba(var(--accent-rgb), 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content is above overlays */
+.theme-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Smooth theme transitions */
+.theme-bg,
+.theme-card,
+.theme-card-elevated,
+.theme-card-hover,
+.theme-text,
+.theme-text-secondary,
+.theme-text-muted,
+.theme-border,
+.theme-border-color {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  /* Larger tap targets for mobile */
+  button {
+    min-height: 44px;
+  }
+
+  /* Better mobile font sizing */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Prevent zoom on input focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Responsive breakpoints */
+@media (min-width: 640px) {
+  /* sm */
+}
+
+@media (min-width: 768px) {
+  /* md */
+}
+
+@media (min-width: 1024px) {
+  /* lg */
+}
+
+@media (min-width: 1280px) {
+  /* xl */
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .theme-card-hover:hover {
+    background-color: var(--bg-secondary);
+  }
+
+  .theme-card-hover:active {
+    background-color: var(--bg-elevated);
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 896px) and (orientation: landscape) {
+  .max-h-screen {
+    max-height: 100vh;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-top)) {
+  .theme-bg {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}

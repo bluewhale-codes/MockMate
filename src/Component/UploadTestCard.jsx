@@ -1,19 +1,35 @@
 import { Upload, Clock, Play, Shield, Check } from 'lucide-react';
+import { useRef } from 'react';
 import { useState } from 'react';
-import * as pdfjsLib from "pdfjs-dist";
-import workerSrc from "pdfjs-dist/build/pdf.worker?url";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
-
+import { setMockTest } from '../Store/slice/mocktestSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import axios from 'axios';
+import Spinner from './Spinner';
 
 
 
 
 export default function UploadTestCard() {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const [file,setFile] = useState(null);
+  
+  const [loading,setLoading] = useState(false);
+  const [questionsReady,setQuestionsReady] = useState(false);
+  const [error,setErrors] = useState();
+  const [name,setName] = useState("Vishal shakya")
+
+  const fileInputRef = useRef(null)
+
+  const [questions,setQuestions] = useState([]);
   const [selectedDuration, setSelectedDuration] = useState(60);
   const [isDragging, setIsDragging] = useState(false);
   const [text,setText] = useState("")
   const durations = [15, 30, 45, 60, 90, 120];
+  const answers = {}
+  const currentQuestion =0
 
   const prompt = `
 Convert this MCQ text into JSON array.
@@ -33,48 +49,78 @@ Convert this MCQ text into JSON array.
     e.preventDefault();
     setIsDragging(false);
   };
+
+  const handleIconClick = () => {
+
+    fileInputRef.current.click();
+  };
+  const handleFileChange = (e) => {
+
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
   const handlePDF = async (e) => {
 
+       if (!file) {
+      alert("Please select PDF");
+      return;
+    }
+
+    const data = new FormData();
+    data.append("pdf",file)
+
     console.log("start...");
-    const file = e.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = async function () {
-      const typedArray = new Uint8Array(this.result);
-
-      const pdf = await pdfjsLib.getDocument(typedArray).promise;
-
-      let finalText = "";
-
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-
-        const content = await page.getTextContent();
-
-        const strings = content.items.map((item) => item.str);
-
-        finalText += strings.join(" ");
-      }
-
-      
-      setText(finalText);
-      
     
+    try {
 
-    };
+           setLoading(true);
+           setQuestionsReady(false);
+            const url = "https://restapis-devfolio.onrender.com";
+            const link = `${url}/mockmate/createQuestion`;
+            const res = await axios.post(link,data,{withCredentials:true});
 
-    reader.readAsArrayBuffer(file);
+          
+            if(res.data.success){
+                setQuestionsReady(true);
+                setQuestions(res.data.result.questions);
+                const data = res.data.result.questions;
+                dispatch(setMockTest({data,selectedDuration,name,currentQuestion,answers}))
+            }else{
+              setErrors("Failed to generate test")
+            }
+           
+            
+        }catch (error) {
+                console.log(error);
+                // setErrors(
+                //   error.response?.data?.message ||
+                //   "Something went wrong"
+                // );
+        }finally{
+            setLoading(false);
+        }
+    
   };
 
+  
 
 
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-4">
-      {/* Section 1: Upload PDF */}
+      {
+  error && (
+            <div className="bg-red-100 text-red-600 p-3 rounded mt-4">
+              {error}
+            </div>
+          )
+        }
+
+        {loading ? <Spinner/> : <>
+          {/* Section 1: Upload PDF */}
       <div className="mb-6">
         {/* <div className="flex items-center gap-2 mb-4">
           <div className="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center">
@@ -83,13 +129,11 @@ Convert this MCQ text into JSON array.
           <h3 className="text-lg font-bold text-gray-900">1. Upload PDF</h3>
         </div> */}
          <div>
-      <input type="file" accept="application/pdf" onChange={handlePDF} />
+    
 
-      <textarea
-        value={text}
-        rows={20}
-        className="border w-full"
-      />
+       <p>
+    
+       </p>
     </div>
 
         {/* Drag and drop area */}
@@ -103,21 +147,24 @@ Convert this MCQ text into JSON array.
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#6C63FF] to-[#7B61FF] flex items-center justify-center mb-3 shadow-lg shadow-purple-200">
+          {loading ? "Preparing your Mock test" : <div className="flex flex-col items-center">
+              <input onChange={handleFileChange} ref={fileInputRef} className='hidden' type="file" accept="application/pdf" onChange={(e)=>setFile(e.target.files[0])} />
+      
+     
+            <div onClick={handleIconClick} className="cursor-pointer w-12 h-12 rounded-xl bg-gradient-to-br from-[#6C63FF] to-[#7B61FF] flex items-center justify-center mb-3 shadow-lg shadow-purple-200">
               <Upload size={20} className="text-white" />
             </div>
 
             <p className="text-base font-semibold text-gray-700 mb-1">
-              Drag & drop your PDF here
+                {file ? file.name : "Choose Your File"}
             </p>
 
-            <p className="text-xs text-gray-500 mb-3">or</p>
+           
 
-            <button className="px-6 py-2 border-2 border-[#6C63FF] text-[#6C63FF] rounded-lg font-semibold hover:bg-purple-50 transition-all hover:shadow-md text-sm">
-              Choose File
+            <button onClick={handlePDF} className="cursor-pointer px-6 py-2 border-2 border-[#6C63FF] text-[#6C63FF] rounded-lg font-semibold hover:bg-purple-50 transition-all hover:shadow-md text-sm">
+              Upload
             </button>
-          </div>
+          </div>}
         </div>
 
         <p className="text-xs text-gray-500 mt-2 flex items-center gap-2">
@@ -173,18 +220,20 @@ Convert this MCQ text into JSON array.
 
       {/* CTA Button */}
       <div>
-        <button className="w-full bg-gradient-to-r from-[#6C63FF] to-[#7B61FF] text-white py-3.5 rounded-xl font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-purple-200 hover:shadow-2xl hover:shadow-purple-300 transition-all hover:scale-[1.02] active:scale-[0.98]">
+        {questionsReady && <button onClick={()=>navigate("/mocktest")} className="w-full bg-gradient-to-r from-[#6C63FF] to-[#7B61FF] text-white py-3.5 rounded-xl font-bold text-base flex items-center justify-center gap-2.5 shadow-xl shadow-purple-200 hover:shadow-2xl hover:shadow-purple-300 transition-all hover:scale-[1.02] active:scale-[0.98]">
           <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
             <Play size={14} className="text-[#6C63FF] ml-0.5" fill="currentColor" />
           </div>
           Start Mock Test
-        </button>
+        </button>}
 
         <div className="flex items-center justify-center gap-2 mt-3 text-xs text-gray-500">
           <Shield size={14} className="text-gray-400" />
           <span>Your test will begin in a secure environment</span>
         </div>
       </div>
+        </>}
+      
     </div>
   );
 }

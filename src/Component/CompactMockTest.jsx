@@ -4,11 +4,16 @@ import {
   Send, Clock, Moon, Sun, Menu, X
 } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
+import { useDispatch } from 'react-redux';
+import { setMockTest } from '../Store/slice/mocktestSlice';
+import { useNavigate } from 'react-router';
 
 export default function CompactMockTest({
   questions = [],
-  duration = 60,
+  duration,
   userName = "Arjun Sharma",
+  CurrentQuestion,
+  Answers,
   examTitle = "MLT Mock Test - 01"
 }) {
   const { theme, toggleTheme } = useTheme();
@@ -19,6 +24,10 @@ export default function CompactMockTest({
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showNavigator, setShowNavigator] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  const dispatch = useDispatch();
+ const navigate = useNavigate()
+ console.log(duration);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -32,6 +41,22 @@ export default function CompactMockTest({
 
     return () => clearInterval(timer);
   }, [timeLeft]);
+
+  useEffect(()=>{
+    setTimeLeft(duration * 60)
+    setCurrentQuestion(CurrentQuestion);
+    setAnswers(Answers);
+  },[duration,CurrentQuestion,Answers]);
+
+  const endMockTest = () => {
+
+  localStorage.removeItem("mocktest");
+  localStorage.removeItem("mocktestState");
+
+  
+
+  navigate("/home");
+};
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -90,6 +115,106 @@ export default function CompactMockTest({
     type: "Single Correct"
   };
 
+  useEffect(() => {
+
+  const handleBeforeUnload = (e) => {
+
+    e.preventDefault();
+
+    e.returnValue =
+      "Your mock test is still running!";
+  };
+
+  window.addEventListener(
+    "beforeunload",
+    handleBeforeUnload
+  );
+
+  return () => {
+
+    window.removeEventListener(
+      "beforeunload",
+      handleBeforeUnload
+    );
+  };
+
+}, []);
+useEffect(() => {
+
+  window.history.pushState(
+    null,
+    "",
+    window.location.href
+  );
+
+  const handlePopState = () => {
+
+    window.history.pushState(
+      null,
+      "",
+      window.location.href
+    );
+
+    alert(
+      "You cannot leave the test before ending it."
+    );
+  };
+
+  window.addEventListener(
+    "popstate",
+    handlePopState
+  );
+
+  return () => {
+
+    window.removeEventListener(
+      "popstate",
+      handlePopState
+    );
+  };
+
+}, []);
+
+  useEffect(() => {
+
+  const savedTest =
+    localStorage.getItem("mocktestState");
+
+  if (savedTest) {
+
+    const parsed = JSON.parse(savedTest);
+    const data = parsed.questions
+    const currentQuestion = parsed.currentQuestion
+    const answers = parsed.answers
+    const name = parsed.userName
+    const selectedDuration = parsed.timeLeft/60
+    
+
+    dispatch(setMockTest({data,selectedDuration,name,currentQuestion,answers}))
+    
+    
+  }
+
+}, []);
+
+  useEffect(() => {
+
+  localStorage.setItem(
+    "mocktestState",
+    JSON.stringify({
+      currentQuestion,
+      answers,
+      questions,
+      userName,
+      timeLeft,
+      
+    })
+  );
+
+}, [currentQuestion, answers, timeLeft]);
+
+
+
   return (
     <div className="min-h-screen theme-bg">
       {/* Navbar */}
@@ -143,6 +268,9 @@ export default function CompactMockTest({
               className="w-7 h-7 md:hidden rounded-lg theme-card-hover flex items-center justify-center theme-border transition-colors"
             >
               {showMobileMenu ? <X size={16} className="theme-text" /> : <Menu size={16} className="theme-text" />}
+            </button>
+            <button className="w-full cursor-pointer py-2.5 md:py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold rounded-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-red-500/50 transition-all text-xs md:text-sm mb-2" onClick={()=>endMockTest()}>
+              End Test
             </button>
           </div>
         </div>

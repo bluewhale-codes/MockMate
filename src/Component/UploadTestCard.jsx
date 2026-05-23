@@ -78,7 +78,7 @@ Convert this MCQ text into JSON array.
 
            setLoading(true);
            setQuestionsReady(false);
-            const url = "https://restapis-devfolio.onrender.com";
+            const url = "http://localhost:3000";
             const link = `${url}/mockmate/createQuestion`;
             const res = await axios.post(link,data,{withCredentials:true});
 

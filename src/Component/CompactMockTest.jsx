@@ -7,6 +7,7 @@ import { useTheme } from './ThemeProvider';
 import { useDispatch } from 'react-redux';
 import { setMockTest } from '../Store/slice/mocktestSlice';
 import { useNavigate } from 'react-router';
+import { FindCorrectOption } from './FindCorrectOption';
 
 export default function CompactMockTest({
   questions = [],
@@ -42,20 +43,19 @@ export default function CompactMockTest({
     return () => clearInterval(timer);
   }, [timeLeft]);
 
+  
+
   useEffect(()=>{
     setTimeLeft(duration * 60)
     setCurrentQuestion(CurrentQuestion);
     setAnswers(Answers);
   },[duration,CurrentQuestion,Answers]);
 
+
+
   const endMockTest = () => {
-
-  localStorage.removeItem("mocktest");
-  localStorage.removeItem("mocktestState");
-
-  
-
-  navigate("/home");
+  alert("Do you want to End this Mock test");
+  navigate("/score");
 };
 
   const formatTime = (seconds) => {
@@ -91,6 +91,7 @@ export default function CompactMockTest({
   const handleSubmit = () => {
     console.log('Test submitted!', { answers, markedForReview });
     alert('Test submitted successfully!');
+    navigate("/score");
   };
 
   const getQuestionStatus = (index) => {
@@ -197,6 +198,8 @@ useEffect(() => {
 
 }, []);
 
+
+
   useEffect(() => {
 
   localStorage.setItem(
@@ -212,6 +215,8 @@ useEffect(() => {
   );
 
 }, [currentQuestion, answers, timeLeft]);
+
+
 
 
 

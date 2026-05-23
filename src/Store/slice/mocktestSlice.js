@@ -14,6 +14,14 @@ const initialState = {
 const saveMocktest = (
    questions,duration,username,currentQuestion,answers
 ) => {
+
+    const correctAnswer = {};
+
+    questions.forEach((q, index) => {
+      const correctIndex = q.options.indexOf(q.correctAnswer);
+      correctAnswer[index] = correctIndex !== -1 ? correctIndex : null;
+    });
+   
     
     console.log("Enter save mock test");
     const mocktest = {
@@ -21,7 +29,8 @@ const saveMocktest = (
         duration:duration,
         name:username,
         currentQuestion:currentQuestion,
-        answers:answers
+        answers:answers,
+        correctAnswer:correctAnswer
     }
  
   // Save again
@@ -29,6 +38,7 @@ const saveMocktest = (
     "mocktest",
     JSON.stringify(mocktest)
   );
+  
 };
 
 const reloadMocktest = ()=>{

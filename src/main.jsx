@@ -7,6 +7,7 @@ import App from './App.jsx'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router'
 import MockMateDashboard from './Component/MockMateDashboard.jsx'
+import ScoreCard from './Component/ScoreCard.jsx'
 
 const router = createBrowserRouter([
     {
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
     },
     {
       path:"/mocktest",Component:App
-    }
+    },
+    {
+      path:"/score",Component:ScoreCard
+    },
+    
 
 ])
 

@@ -71,6 +71,7 @@ Convert this MCQ text into JSON array.
 
     const data = new FormData();
     data.append("pdf",file)
+    console.log("Hello world");
 
     console.log("start...");
     

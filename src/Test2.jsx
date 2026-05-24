@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Button } from "../src/Component/ui/button";
+import { Button } from "../src/Component/ui/Button";
 import { Input } from "../src/Component/ui/input";
 import { Label } from "../src/Component/ui/label";
 import {

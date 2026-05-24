@@ -8,6 +8,8 @@ import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router'
 import MockMateDashboard from './Component/MockMateDashboard.jsx'
 import ScoreCard from './Component/ScoreCard.jsx'
+import Test from './Test.jsx'
+import Test2 from './Test2.jsx'
 
 const router = createBrowserRouter([
     {
@@ -18,6 +20,12 @@ const router = createBrowserRouter([
     },
     {
       path:"/score",Component:ScoreCard
+    },
+    {
+      path:"/test",Component:Test
+    },
+    {
+      path:"/test2",Component:Test2
     },
     
 

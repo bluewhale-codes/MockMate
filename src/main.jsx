@@ -10,6 +10,7 @@ import MockMateDashboard from './Component/MockMateDashboard.jsx'
 import ScoreCard from './Component/ScoreCard.jsx'
 import Test from './Test.jsx'
 import Test2 from './Test2.jsx'
+import Test3 from './Test3.jsx'
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,9 @@ const router = createBrowserRouter([
     },
     {
       path:"/test2",Component:Test2
+    },
+    {
+      path:"/test3",Component:Test3
     },
     
 

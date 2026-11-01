@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Heart, ShoppingBag, Share2, Bookmark, ChevronLeft, X, ZoomIn } from "lucide-react";
 import { Dialog, DialogContent } from "./Component/ui/dialog";
-import { Button } from "./Component/ui/button";
+import { Button } from "./Component/ui/Button";
 import { Badge } from "./Component/ui/badge";
 
 gsap.registerPlugin(ScrollTrigger);

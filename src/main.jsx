@@ -11,13 +11,16 @@ import ScoreCard from './Component/ScoreCard.jsx'
 import Test from './Test.jsx'
 import Test2 from './Test2.jsx'
 import Test3 from './Test3.jsx'
+import Test4 from './Test4.jsx'
+import Test5 from './Test5.jsx'
+import MyHome from './SkinstoreComponents/MyHome.jsx'
 
 const router = createBrowserRouter([
     {
       path:"/home",Component:MockMateDashboard
     },
     {
-      path:"/mocktest",Component:App
+      path:"/mrspa",Component:App
     },
     {
       path:"/score",Component:ScoreCard
@@ -30,6 +33,15 @@ const router = createBrowserRouter([
     },
     {
       path:"/test3",Component:Test3
+    },
+    {
+      path:"/test4",Component:Test4
+    },
+    {
+      path:"/test5",Component:Test5
+    },
+    {
+      path:"/skinHome",Component:MyHome
     },
     
 

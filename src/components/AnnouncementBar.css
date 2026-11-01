@@ -1,0 +1,60 @@
+.announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 38px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #064B38;
+}
+
+.announcement-track {
+  display: flex;
+  width: max-content;         /* key: track shrinks to content, not viewport */
+  animation: marquee-scroll linear infinite;
+  will-change: transform;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }   /* exactly one copy → seamless loop */
+}
+
+.announcement-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  white-space: nowrap;        /* key: messages never wrap or split */
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.announcement-sep {
+  color: #d4af37;             /* subtle gold separator */
+  font-size: 11px;
+}
+
+/* Pause on hover — desktop only (touch devices don't have real hover) */
+@media (hover: hover) {
+  .announcement-bar:hover .announcement-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Responsive sizing on mobile */
+@media (max-width: 640px) {
+  .announcement-bar { height: 32px; }
+  .announcement-item {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    gap: 10px;
+    padding: 0 10px;
+  }
+  .announcement-sep { font-size: 9px; }
+}

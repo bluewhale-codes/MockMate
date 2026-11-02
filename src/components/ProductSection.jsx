@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import { PRODUCTS, CATEGORIES } from '../data/products'
 import ProductCard from './ProductCard'
+import ProductModal from './ProductModal'
 
 export default function ProductSection({ query, category, onSelectCategory }) {
+  const [selected, setSelected] = useState(null)
+
   const q = query.trim().toLowerCase()
   const filtered = PRODUCTS.filter((p) => {
     const matchCategory = category === 'All' || p.category === category
@@ -35,11 +39,13 @@ export default function ProductSection({ query, category, onSelectCategory }) {
         ) : (
           <div className="product-grid">
             {filtered.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} onView={setSelected} />
             ))}
           </div>
         )}
       </div>
+
+      <ProductModal product={selected} onClose={() => setSelected(null)} />
     </section>
   )
 }

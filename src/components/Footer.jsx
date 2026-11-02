@@ -3,7 +3,13 @@ export default function Footer({ onNavigate }) {
     <footer className="site-footer" id="contact">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <span className="brand-logo light">Mr<em>SPA</em></span>
+          <button className="footer-logo-btn" onClick={() => onNavigate('home')} aria-label="MrSPA home">
+            <img
+              src="https://res.cloudinary.com/dycjjaxsk/image/upload/v1793644318/MrSPA_Home_Wellness_Logo_jrmxse.png"
+              alt="MrSPA Home Wellness logo"
+              className="footer-logo"
+            />
+          </button>
           <p className="footer-tagline">HOME WELLNESS SERVICES</p>
           <p className="footer-about">
             Premium home-cleaning and wellness products for a cleaner, healthier home.

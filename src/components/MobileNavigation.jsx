@@ -18,7 +18,7 @@ export default function MobileNavigation({ open, onClose, onNavigate, categories
       <div className={`overlay ${open ? 'show' : ''}`} onClick={onClose} />
       <aside className={`mobile-nav ${open ? 'open' : ''}`} aria-hidden={!open}>
         <div className="mobile-nav-head">
-          <span className="brand-logo">Mr<em>SPA</em></span>
+          
           <button className="icon-btn" onClick={onClose} aria-label="Close menu">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
               <path d="M18 6 6 18M6 6l12 12" />

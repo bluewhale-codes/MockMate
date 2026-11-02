@@ -8,6 +8,8 @@ const NAV_LINKS = [
   { label: 'Contact', target: 'contact' },
 ]
 
+const LOGO_URL = 'https://res.cloudinary.com/dycjjaxsk/image/upload/v1793644421/MrSPA_Home_Wellness_Logo_1_-Photoroom_eoasxf.png'
+
 export default function Header({
   query, onSearch, onCartOpen, onNavigate,
   onOpenMobileNav, categories, onSelectCategory, count,
@@ -28,8 +30,18 @@ export default function Header({
     <header className="site-header">
       <div className="container header-inner">
         <button className="brand" onClick={() => handleNav(NAV_LINKS[0])} aria-label="MrSPA home">
-          <span className="brand-logo">Mr<em>SPA</em></span>
-          <span className="brand-tagline">HOME WELLNESS SERVICES</span>
+          <span
+            className="brand-logo"
+            role="img"
+            aria-label="MrSPA logo"
+            style={{
+              backgroundImage: `url(${LOGO_URL})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+         
         </button>
 
         <nav className="main-nav" aria-label="Primary">
